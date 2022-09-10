@@ -121,7 +121,7 @@ local function SetValue(self, itemLink)
 	local link = GetMerchantItemLink(itemLink)
 
 	local gradient, shown = ns.GetRowGradient(itemLink)
-	self.backdrop:SetGradientAlpha("HORIZONTAL", unpack(gradient))
+	-- self.backdrop:SetGradientAlpha("HORIZONTAL", unpack(gradient))
 	self.backdrop:SetShown(shown)
 
 	self.icon:SetTexture(itemTexture)
