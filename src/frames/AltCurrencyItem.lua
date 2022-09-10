@@ -19,19 +19,15 @@ local function OnLeave()
 end
 
 
-local function GetCurencyCount(item)
-	for i=1,C_CurrencyInfo.GetCurrencyListSize() do
-		local name, _, _, _, _, count = C_CurrencyInfo.GetCurrencyListInfo(i)
-		if item == name then return count end
-	end
-end
-
-
-local function GetQtyOwned(item)
+function GetQtyOwned(item)
 	local id = ns.ids[item]
-	if id then return GetItemCount(id, true) or 0 end
+	if id then
+		return GetItemCount(id, true)
+	end
 
-	return GetCurencyCount(item) or 0
+	local currency = C_CurrencyInfo.GetCurrencyInfoFromLink(item)
+
+	return currency.quantity
 end
 
 
