@@ -113,21 +113,21 @@ local function BuyItem(self, fullstack)
 end
 
 
-local function SetValue(self, i)
-	self:SetID(i)
+local function SetValue(self, itemLink)
+	self:SetID(itemLink)
 	self:Show()
 
-	local name, itemTexture, itemPrice, itemStackCount, numAvailable, isUsable, extendedCost = GetMerchantItemInfo(i)
-	local link = GetMerchantItemLink(i)
+	local name, itemTexture, itemPrice, itemStackCount, numAvailable, isUsable, extendedCost = GetMerchantItemInfo(itemLink)
+	local link = GetMerchantItemLink(itemLink)
 
-	local gradient, shown = ns.GetRowGradient(i)
+	local gradient, shown = ns.GetRowGradient(itemLink)
 	self.backdrop:SetGradientAlpha("HORIZONTAL", unpack(gradient))
 	self.backdrop:SetShown(shown)
 
 	self.icon:SetTexture(itemTexture)
-	self.icon:SetVertexColor(ns.GetRowVertexColor(i))
+	self.icon:SetVertexColor(ns.GetRowVertexColor(itemLink))
 
-	local textcolor = ns.GetRowTextColor(i)
+	local textcolor = ns.GetRowTextColor(itemLink)
 	local text =
 		(numAvailable > -1 and ("["..numAvailable.."] ") or "")..
 		textcolor..
@@ -135,7 +135,12 @@ local function SetValue(self, i)
 		(itemStackCount > 1 and ("|r x"..itemStackCount) or "")
 	self.ItemName:SetText(text)
 
-	self.AltCurrency:SetValue(i)
+	self.AltCurrency:SetValue(itemLink)
+	if self.AltCurrency:IsShown() then
+	    self.ItemName:SetPoint("RIGHT", self.AltCurrency, "LEFT", -GAP, 0)
+	else
+	    self.ItemName:SetPoint("RIGHT", self.ItemPrice, "LEFT", -GAP, 0)
+	end
 
 	if extendedCost then
 		self.link, self.texture, self.extendedCost = link, itemTexture, true
