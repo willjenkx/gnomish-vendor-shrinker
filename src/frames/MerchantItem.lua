@@ -112,7 +112,6 @@ local function BuyItem(self, fullstack)
 	ns.Purchase(id, fullstack and itemStackSize or vendorStackSize or 1)
 end
 
-
 local function SetValue(self, itemLink)
 	self:SetID(itemLink)
 	self:Show()
@@ -121,7 +120,7 @@ local function SetValue(self, itemLink)
 	local link = GetMerchantItemLink(itemLink)
 
 	local gradient, shown = ns.GetRowGradient(itemLink)
-	-- self.backdrop:SetGradientAlpha("HORIZONTAL", unpack(gradient))
+	self.backdrop:SetGradient("HORIZONTAL", unpack(gradient))
 	self.backdrop:SetShown(shown)
 
 	self.icon:SetTexture(itemTexture)
@@ -161,7 +160,7 @@ end
 
 
 function ns.NewMerchantItemFrame(parent)
-	local frame = CreateFrame("Button", nil, parent)
+	local frame = CreateFrame("Button", nil, parent, "BackdropTemplate")
 	frame:SetHeight(HEIGHT)
 
 	frame:SetHighlightTexture("Interface\\HelpFrame\\HelpFrameButton-Highlight")

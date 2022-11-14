@@ -26,14 +26,14 @@ local function RecipeNeedsRank(link)
 end
 
 
-local DEFAULT_GRAD = {0,1,0,0.75, 0,1,0,0} -- green
+local DEFAULT_GRAD = {CreateColor(0,1,0,0.75), CreateColor(0,1,0,0)} -- green
 local GRADS = {
-	red = {1,0,0,0.75, 1,0,0,0},
-	[1] = {1,1,1,0.75, 1,1,1,0}, -- white
+	red = {CreateColor(1,0,0,0.75), CreateColor(1,0,0,0)},
+	[1] = {CreateColor(1,1,1,0.75), CreateColor(1,1,1,0)}, -- white
 	[2] = DEFAULT_GRAD, -- green
-	[3] = {0.5,0.5,1,1, 0,0,1,0}, -- blue
-	[4] = {1,0,1,0.75, 1,0,1,0}, -- purple
-	[7] = {1,.75,.5,0.75, 1,.75,.5,0}, -- heirloom
+	[3] = {CreateColor(0.5,0.5,1,1), CreateColor(0,0,1,0)}, -- blue
+	[4] = {CreateColor(1,0,1,0.75), CreateColor(1,0,1,0)}, -- purple
+	[7] = {CreateColor(1,.75,.5,0.75), CreateColor(1,.75,.5,0)}, -- heirloom
 }
 GRADS = setmetatable(GRADS, {
 	__index = function(t,i)
@@ -47,14 +47,18 @@ function ns.GetRowGradient(index)
 	local gradient = DEFAULT_GRAD
 	local shown = false
 
-	local _, _, _, _, _, isUsable = GetMerchantItemInfo(index)
+	local merchantItemID = GetMerchantItemID(index);
+	local isHeirloom = merchantItemID and C_Heirloom.IsItemHeirloom(merchantItemID);
 
-	if not isUsable then
+	local _, _, _, _, _, isPurchasable, isUsable, _, _, _ = GetMerchantItemInfo(index);
+
+	if not isPurchasable or (not isUsable and not isHeirloom) then
 		return GRADS.red, true
 	end
 	
 	local link = GetMerchantItemLink(index)
-	if not (link and Knowable(link)) then return gradient, shown end
+	if not (link and Knowable(link)) then
+		return gradient, shown end
 	if ns.knowns[link] then
 		return gradient, false
 	elseif RecipeNeedsRank(link) then
