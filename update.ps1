@@ -1,4 +1,4 @@
-$installdirectory = "F:\World of Warcraft\_beta_\Interface\AddOns\GnomishVendorShrinker\"
+$installdirectory = "F:\World of Warcraft\_retail_\Interface\AddOns\GnomishVendorShrinker\"
 
 rimraf "$installdirectory*"
 
