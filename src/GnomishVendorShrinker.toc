@@ -1,4 +1,4 @@
-## Interface: 70000
+## Interface: 10200
 
 ## Title: GnomishVendorShrinker
 ## Notes: Compact scrolling vendor frame

@@ -3,8 +3,8 @@ local myname, ns = ...
 
 
 
-local RECIPE = GetItemClassInfo(LE_ITEM_CLASS_RECIPE)
-local MISC = GetItemClassInfo(LE_ITEM_CLASS_MISCELLANEOUS)
+local RECIPE = GetItemClassInfo(Enum.ItemClass.Recipe)
+local MISC = GetItemClassInfo(Enum.ItemClass.Miscellaneous)
 local GARRISON_ICONS = {[1001489] = true, [1001490] = true, [1001491] = true}
 
 
