@@ -129,8 +129,8 @@ local function SetValue(self, itemLink)
 	local textcolor = ns.GetRowTextColor(itemLink)
 	local text =
 		(numAvailable > -1 and ("["..numAvailable.."] ") or "")..
-		textcolor..
 		(ns.can_learn_appearance[link] and "*" or "")..
+		textcolor..
 		(name or "<Loading item data>")..
 		(itemStackCount > 1 and ("|r x"..itemStackCount) or "")
 	self.ItemName:SetText(text)

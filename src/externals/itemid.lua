@@ -8,6 +8,8 @@ ns.ids = setmetatable({}, {
 		if type(i) == "number" then
 			t[i] = i
 			return i
+		elseif type(i) == "nil" then
+			return
 		elseif type(i) ~= "string" then
 			t[i] = false
 			return

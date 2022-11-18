@@ -26,7 +26,7 @@ ns.knowns = setmetatable({}, {
 	__index = function(t, i)
 		local id = ns.ids[i]
 		if not id then return end
-		if --[[HasHeirloom(id) or]] IsKnown(id) then
+		if HasHeirloom(id) or IsKnown(id) then
 			t[i] = true
 			return true
 		end

@@ -5,8 +5,16 @@ local myname, ns = ...
 
 local RECIPE = GetItemClassInfo(Enum.ItemClass.Recipe)
 local MISC = GetItemClassInfo(Enum.ItemClass.Miscellaneous)
+local CONSUMABLE = GetItemClassInfo(Enum.ItemClass.Consumable)
 local GARRISON_ICONS = {[1001489] = true, [1001490] = true, [1001491] = true}
 
+local function IsToy(id, class)
+	if class == MISC or class == CONSUMABLE then
+		if select(2, C_ToyBox.GetToyInfo(id)) then
+			return true
+		end
+	end
+end
 
 local function Knowable(link)
 	local id = ns.ids[link]
@@ -14,10 +22,10 @@ local function Knowable(link)
 	if C_Heirloom.IsItemHeirloom(id) then return true end
 
 	local _, _, _, _, _, class, _, _, _, texture = GetItemInfo(link)
-	if class == MISC and select(2, C_ToyBox.GetToyInfo(id)) then return true end
+	--if class == MISC and select(2, C_ToyBox.GetToyInfo(id)) then return true end
+	if IsToy(id, class) then return true end
 	if class == RECIPE or GARRISON_ICONS[texture] then return true end
 end
-
 
 local function RecipeNeedsRank(link)
 	local _, _, _, _, _, class = GetItemInfo(link)
@@ -44,7 +52,7 @@ GRADS = setmetatable(GRADS, {
 
 function ns.GetRowGradient(index)
 	local gradient = DEFAULT_GRAD
-	local shown = false
+	local quality = 2
 
 	local merchantItemID = GetMerchantItemID(index);
 	local isHeirloom = merchantItemID and C_Heirloom.IsItemHeirloom(merchantItemID);
@@ -56,16 +64,21 @@ function ns.GetRowGradient(index)
 	end
 	
 	local link = GetMerchantItemLink(index)
+
+	if link then
+		quality = select(3, GetItemInfo(link))
+	end
+
 	if not (link and Knowable(link)) then
-		return gradient, shown end
+		return GRADS[quality], true end
 	if ns.knowns[link] then
+		print("nope".. link)
 		return gradient, false
-	elseif RecipeNeedsRank(link) then
-		return GRADS.red, true
-	elseif not CanAffordMerchantItem(index) then
+	elseif not CanAffordMerchantItem(index) == false or RecipeNeedsRank(link) then
+		print("Cannot afford"..link..index)
 		return GRADS.red, true
 	else
-		local _, _, quality = GetItemInfo(link)
+		print("beep"..link)
 		return GRADS[quality], true
 	end
 end
