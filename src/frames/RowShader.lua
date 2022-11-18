@@ -25,7 +25,6 @@ local function RecipeNeedsRank(link)
 	return ns.unmet_requirements[link]
 end
 
-
 local DEFAULT_GRAD = {CreateColor(0,1,0,0.75), CreateColor(0,1,0,0)} -- green
 local GRADS = {
 	red = {CreateColor(1,0,0,0.75), CreateColor(1,0,0,0)},

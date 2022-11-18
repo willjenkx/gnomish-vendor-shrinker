@@ -6,21 +6,28 @@ local function HasHeirloom(id)
 	return C_Heirloom.IsItemHeirloom(id) and C_Heirloom.PlayerHasHeirloom(id)
 end
 
-
-local function IsKnown(link)
-	ns.scantip:SetHyperlink(link)
-	for i=1,ns.scantip:NumLines() do
-		if ns.scantip.L[i] == ITEM_SPELL_KNOWN then return true end
+local function ScanLeftText(id, validator)
+	ns.scantip = C_TooltipInfo.GetItemByID(id)
+	TooltipUtil.SurfaceArgs(ns.scantip)
+	for _, line in ipairs(ns.scantip.lines) do
+		TooltipUtil.SurfaceArgs(line)
+		if line.leftText == validator
+		then
+			return true
+		end
 	end
 end
 
+
+local function IsKnown(id)
+	return ScanLeftText(id, ITEM_SPELL_KNOWN)
+end
 
 ns.knowns = setmetatable({}, {
 	__index = function(t, i)
 		local id = ns.ids[i]
 		if not id then return end
-
-		if HasHeirloom(id) or IsKnown(i) then
+		if HasHeirloom(id) or IsKnown(id) then
 			t[i] = true
 			return true
 		end
@@ -29,23 +36,34 @@ ns.knowns = setmetatable({}, {
 
 
 -- "Requires Previous Rank"
-local PREV_RANK = TOOLTIP_SUPERCEDING_SPELL_NOT_KNOWN
-local function NeedsRank(link)
-	ns.scantip:SetHyperlink(link)
-	for i=1,ns.scantip:NumLines() do
-		if ns.scantip.L[i] == PREV_RANK then return true end
-	end
+local function NeedsRank(id)
+	return ScanLeftText(id, TOOLTIP_SUPERCEDING_SPELL_NOT_KNOWN)
 end
-
 
 ns.unmet_requirements = setmetatable({}, {
 	__index = function(t, i)
 		local id = ns.ids[i]
 		if not id then return end
 
-		if NeedsRank(i) then
+		if NeedsRank(id) then
 			t[i] = true
 			return true
 		end
 	end
 })
+
+local function CanLearnAppearance(id)
+	return ScanLeftText(id, TRANSMOGRIFY_TOOLTIP_APPEARANCE_UNKNOWN)
+end
+
+ns.can_learn_appearance = setmetatable({}, {
+	__index = function(t, i)
+		local id = ns.ids[i]
+		if not id then return end
+		if CanLearnAppearance(id) then
+			t[i] = true
+			return true
+		end
+	end
+})
+
