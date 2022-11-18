@@ -11,8 +11,7 @@ local function ScanLeftText(id, validator)
 	TooltipUtil.SurfaceArgs(ns.scantip)
 	for _, line in ipairs(ns.scantip.lines) do
 		TooltipUtil.SurfaceArgs(line)
-		if line.leftText == validator
-		then
+		if line.leftText == validator then
 			return true
 		end
 	end
@@ -27,7 +26,7 @@ ns.knowns = setmetatable({}, {
 	__index = function(t, i)
 		local id = ns.ids[i]
 		if not id then return end
-		if HasHeirloom(id) or IsKnown(id) then
+		if --[[HasHeirloom(id) or]] IsKnown(id) then
 			t[i] = true
 			return true
 		end
