@@ -72,13 +72,10 @@ function ns.GetRowGradient(index)
 	if not (link and Knowable(link)) then
 		return GRADS[quality], true end
 	if ns.knowns[link] then
-		print("nope".. link)
 		return gradient, false
 	elseif not CanAffordMerchantItem(index) == false or RecipeNeedsRank(link) then
-		print("Cannot afford"..link..index)
 		return GRADS.red, true
 	else
-		print("beep"..link)
 		return GRADS[quality], true
 	end
 end
