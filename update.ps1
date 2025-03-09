@@ -1,5 +1,5 @@
-$installdirectory = "F:\World of Warcraft\_retail_\Interface\AddOns\GnomishVendorShrinker\"
+$installdirectory = "G:\World of Warcraft\_retail_\Interface\AddOns\GnomishVendorShrinker\"
 
-rimraf "$installdirectory*"
+rm "$installdirectory*" -Recurse -Force
 
 Copy-Item -Path ".\src\*" -Destination $installdirectory -Recurse

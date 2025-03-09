@@ -8,9 +8,7 @@ end
 
 local function ScanLeftText(id, validator)
 	ns.scantip = C_TooltipInfo.GetItemByID(id)
-	TooltipUtil.SurfaceArgs(ns.scantip)
 	for _, line in ipairs(ns.scantip.lines) do
-		TooltipUtil.SurfaceArgs(line)
 		if line.leftText == validator then
 			return true
 		end
